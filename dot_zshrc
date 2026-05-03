@@ -84,6 +84,8 @@ if [ -f "${ZINIT_HOME}/zinit.zsh" ]; then
       wait \
       zsh-users/zsh-completions
 
+  zinit light nbari/slick
+
   if [[ -n $DISPLAY || -n $WAYLAND_DISPLAY ]] && \
      (command -v wl-copy >/dev/null 2>&1 || command -v xclip >/dev/null 2>&1 || command -v xsel >/dev/null 2>&1); then
       zinit light kutsan/zsh-system-clipboard
