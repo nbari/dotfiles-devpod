@@ -139,3 +139,7 @@ else
   alias lx="$LS_COMMAND -lbhHigUmuSa@ --time-style=long-iso --git --color-scale"
 fi
 unset LS_COMMAND
+
+alias path='echo -e ${PATH//:/\\n}'
+alias gl="git log --decorate --graph --oneline --all --date=short --pretty=format:'%C(bold blue)%ad%Creset %C(yellow)%h%Creset%C(auto)%d%Creset %s %C(dim magenta)<%an>%Creset %C(dim green)(%ar)%Creset'"
+alias rm='rm -i'

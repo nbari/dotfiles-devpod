@@ -4,6 +4,10 @@ set -euo pipefail
 user_bin_dir="${HOME}/.local/bin"
 export PATH="${user_bin_dir}:${PATH}"
 
+if [ -z "${MISE_CONFIG_FILE:-}" ] && [ ! -f "${HOME}/.config/mise/config.toml" ] && [ ! -f "${PWD}/mise.toml" ]; then
+  exit 0
+fi
+
 if command -v mise >/dev/null 2>&1; then
   mise install || printf '%s\n' "WARNING: mise install failed; continuing without installing all configured tools." >&2
 elif [ -x "${user_bin_dir}/mise" ]; then

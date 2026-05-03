@@ -25,8 +25,9 @@ Local checkout bootstrap from this repository clone:
 ```
 
 After chezmoi applies the dotfiles, `run_after_90-install-mise-tools.sh.tmpl`
-runs `mise install` so tools declared in `~/.config/mise/config.toml`, including
-`slick`, are installed best-effort.
+runs `mise install` best-effort only when a mise config is present. Project
+devpods should own their toolset in the project `mise.toml`; these dotfiles only
+install and activate `mise`.
 
 ## Optional Git Identity
 
