@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+user_bin_dir="${HOME}/.local/bin"
+mkdir -p "${user_bin_dir}"
+export PATH="${user_bin_dir}:${PATH}"
+
+if command -v mise >/dev/null 2>&1; then
+  exit 0
+fi
+
+if [ -x "${user_bin_dir}/mise" ]; then
+  exit 0
+fi
+
+if ! command -v curl >/dev/null 2>&1; then
+  printf '%s
+' 'curl is required to install mise.' >&2
+  exit 1
+fi
+
+curl -fsSL https://mise.run | sh

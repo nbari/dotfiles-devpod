@@ -1,0 +1,84 @@
+{{- $gitUserName := env "GIT_USER_NAME" -}}
+{{- $gitUserEmail := env "GIT_USER_EMAIL" -}}
+{{- $gitSigningKey := env "GIT_SIGNING_KEY" -}}
+{{- $gitSSHSigningProgram := env "GIT_SSH_SIGNING_PROGRAM" -}}
+[init]
+    defaultBranch = main
+
+[push]
+    default = simple
+    autoSetupRemote = true
+
+[pull]
+    ff = only
+
+[fetch]
+    prune = true
+    pruneTags = true
+
+[core]
+    editor = nvim
+    excludesfile = {{ .chezmoi.homeDir }}/.gitignore_global
+
+[color]
+    ui = auto
+
+[branch]
+    sort = -committerdate
+
+[tag]
+    sort = version:refname
+
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
+
+[merge]
+    conflictstyle = diff3
+
+[rerere]
+    enabled = true
+
+[alias]
+    br = branch
+    ci = commit
+    co = checkout
+    st = status --short --branch
+    sw = switch
+    unstage = reset HEAD --
+    last = log -1 HEAD --stat
+    lg = log --graph --decorate --oneline --all
+    diffpull = !git fetch && git diff HEAD..@{u}
+{{- if or $gitUserName $gitUserEmail $gitSigningKey }}
+
+[user]
+{{- if $gitUserName }}
+    name = {{ $gitUserName | quote }}
+{{- end }}
+{{- if $gitUserEmail }}
+    email = {{ $gitUserEmail | quote }}
+{{- end }}
+{{- if $gitSigningKey }}
+    signingkey = {{ $gitSigningKey | quote }}
+{{- end }}
+{{- end }}
+{{- if or $gitSigningKey $gitSSHSigningProgram }}
+
+[gpg]
+    format = ssh
+{{- end }}
+{{- if $gitSSHSigningProgram }}
+
+[gpg "ssh"]
+    program = {{ $gitSSHSigningProgram | quote }}
+{{- end }}
+{{- if $gitSigningKey }}
+
+[commit]
+    gpgsign = true
+
+[tag]
+    gpgSign = true
+{{- end }}

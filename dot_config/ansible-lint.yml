@@ -1,0 +1,8 @@
+---
+# https://docs.ansible.com/ansible-lint/rules/default_rules.html
+skip_list:
+  - jinja[spacing]
+  - yaml[octal-values]
+  - yaml[line-length]
+  - yaml[commas]
+  - no-changed-when
