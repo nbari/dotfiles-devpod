@@ -42,6 +42,15 @@ unset path_entries system_path_defaults
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# Ensure a UTF-8 locale. Containers frequently default to POSIX/ASCII (LANG unset),
+# which makes tmux fall back to ASCII pane borders and breaks unicode glyphs. Only
+# set a default when a UTF-8 locale isn't already active (so a host-forwarded
+# en_US.UTF-8 etc. is preserved).
+if [[ -z ${LC_ALL:-} && ${LANG:-} != *(UTF-8|utf8) ]]; then
+  export LANG=C.UTF-8
+  export LC_ALL=C.UTF-8
+fi
+
 podman_socket="/run/user/$(id -u)/podman/podman.sock"
 if [ -z "${DOCKER_HOST:-}" ] && [ "$(uname -s)" = "Linux" ] && [ -S "$podman_socket" ]; then
   export DOCKER_HOST="unix://${podman_socket}"
