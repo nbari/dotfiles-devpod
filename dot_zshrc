@@ -158,3 +158,6 @@ alias vi="nvim"
 alias vim="nvim"
 alias view="nvim -R"
 alias vimdiff="nvim -d"
+
+# pyclean
+alias pyclean='find . \( -name "__pycache__" -o -name "*.pyc" -o -name "*.pyo" \) -exec rm -rf {} +'
