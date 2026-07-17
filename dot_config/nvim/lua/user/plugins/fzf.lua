@@ -37,9 +37,9 @@ M.keys = {
     {
         "<C-s>",
         function()
-            require("fzf-lua").live_grep()
+            require("fzf-lua").grep_cword()
         end,
-        desc = "fzf-lua live grep"
+        desc = "fzf-lua grep word under cursor"
     }
 }
 
