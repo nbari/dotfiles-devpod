@@ -1,22 +1,16 @@
 -- LSP Diagnostics Options Setup
-local sign = function(opts)
-    vim.fn.sign_define(opts.name, {
-        texthl = opts.name,
-        text = opts.text,
-        numhl = ""
-    })
-end
-
--- LuaFormatter off
-sign({ name = "DiagnosticSignError", text = "" })
-sign({ name = "DiagnosticSignWarn", text = "" })
-sign({ name = "DiagnosticSignHint", text = "" })
-sign({ name = "DiagnosticSignInfo", text = "" })
--- LuaFormatter on
+local severity = vim.diagnostic.severity
 
 vim.diagnostic.config({
     virtual_text = false,
-    signs = true,
+    signs = {
+        text = {
+            [severity.ERROR] = "",
+            [severity.WARN] = "",
+            [severity.HINT] = "",
+            [severity.INFO] = ""
+        }
+    },
     update_in_insert = false,
     underline = true,
     severity_sort = false,
