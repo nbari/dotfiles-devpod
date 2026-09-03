@@ -1,0 +1,69 @@
+onboarding = false
+
+[ui]
+agent_panel_sort = "priority"
+
+# prefix+b collapses the sidebar; "compact" leaves a narrow status rail behind,
+# "hidden" gives the panes the full width. Start collapsed too -- that one only
+# takes effect on the next launch, not on a config reload.
+sidebar_collapsed_mode = "hidden"
+sidebar_start_collapsed = true
+# tmux's `bind c new-window` opens immediately; don't ask for a tab name first.
+# Tabs get generated names, renameable later with prefix+shift+t.
+prompt_new_tab_name = false
+
+# Port of the tmux status-right: [ host ]  users - load  HH:MM:SS
+# No colours: entries take no fg field and Herdr strips ANSI from command
+# output, so the bar follows the theme. Only `command` needs a shell; the
+# hostname and clock resolve natively on the Herdr server.
+# interval_seconds mirrors tmux's status-interval 5.
+# `zoom` shows a ZOOM pill only while the active tab is zoomed.
+tab_bar_right = [
+    { type = "zoom" },
+    { type = "hostname" },
+    { type = "command", command = "uptime | sed -E 's/.* ([0-9]+ users?),.*: (.*)$/\\1 - \\2/'", interval_seconds = 5, timeout_seconds = 2 },
+    { type = "datetime", format = "%H:%M:%S" },
+]
+tab_bar_right_separator = "  "
+
+[theme]
+name = "catppuccin"
+auto_switch = false
+
+[keys]
+# Splits keep Herdr's native chords and gain the tmux ones alongside them.
+# Herdr names these after the DIVIDER orientation, which is inverted from
+# tmux's flag names, so the tmux keys land right even though the action
+# names read backwards:
+#   split_vertical   -> new pane to the right  (tmux: bind % split-window -h)
+#   split_horizontal -> new pane below         (tmux: bind '"' split-window -v)
+# If a split goes the wrong way, swap the two lines below.
+split_vertical = ["prefix+v", "prefix+%"]
+split_horizontal = ["prefix+minus", "prefix+\""]
+
+# like sessions in tmux
+workspace_picker = "prefix+s"
+
+# tmux put its popup shell on prefix+p, but that is previous_tab in Herdr and
+# worth keeping on its default. The popup takes prefix+t instead -- free, and
+# a single keypress. (t for terminal; prefix+shift+t stays rename_tab.)
+[[keys.command]]
+key = "prefix+t"
+type = "popup"
+command = "zsh"
+width = "80%"
+height = "80%"
+
+# tmux's `bind ! break-pane` moves the current pane into its own window and
+# switches to it. Port: move the active pane into a new tab and focus it.
+[[keys.command]]
+key = "prefix+!"
+type = "shell"
+command = "herdr pane move $HERDR_ACTIVE_PANE_ID --new-tab --focus"
+
+[advanced]
+# tmux kept history-limit 1000000 lines per pane. Herdr counts bytes, and its
+# 10 MB default is roughly 100k lines -- about a tenth of that. 50 MB lands
+# near 500k lines per pane. Raise to 100000000 for full parity, bearing in mind
+# this is per pane and Herdr sessions hold many long-lived agent panes.
+scrollback_limit_bytes = 50000000
